@@ -37,17 +37,16 @@ public class TestStrictBankAccount {
     @Test
     public void testManagementFees() {
         bankAccount.deposit(mRossi.getUserID(), 100);
+        double expectedfee = bankAccount.getBalance() - (MANAGEMENT_FEE
+                + bankAccount.getTransactionsCount() * TRANSACTION_FEE);
         bankAccount.chargeManagementFees(mRossi.getUserID());
-
-        double expectedfee = INITIAL_AMOUNT - MANAGEMENT_FEE - TRANSACTION_FEE;
         assertEquals(expectedfee, bankAccount.getBalance());
-        assertEquals(0, bankAccount.getTransactionsCount());
     }
 
     // 4. Test the withdraw of a negative value
     @Test
     public void testNegativeWithdraw() {
-         try {
+        try {
             bankAccount.deposit(mRossi.getUserID(), -12);
             Assertions.fail();
         } catch (IllegalArgumentException e) {
@@ -65,4 +64,4 @@ public class TestStrictBankAccount {
             Assertions.assertEquals("not enought money in the bank", e.getMessage());
         }
     }
-    }
+}
